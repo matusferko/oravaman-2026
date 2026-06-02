@@ -15,7 +15,7 @@ export default function App() {
       </div>
 
       <div className="chartcard">
-        <img src="/chart.png" alt="Graf týždenného objemu tréningu" />
+        <img src={`${import.meta.env.BASE_URL}chart.png`} alt="Graf týždenného objemu tréningu" />
       </div>
 
       <h2 className="section">Týždeň po týždni</h2>
