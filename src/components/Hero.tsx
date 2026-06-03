@@ -1,11 +1,7 @@
-import type { Fact } from "../types";
 import { RaceCountdown } from "./RaceCountdown";
+import { TrainingRemaining } from "./TrainingRemaining";
 
-type HeroProps = {
-  facts: Fact[];
-};
-
-export function Hero({ facts }: HeroProps) {
+export function Hero() {
   return (
     <div className="hero">
       <svg
@@ -29,14 +25,7 @@ export function Hero({ facts }: HeroProps) {
         ORAVAMAN <span>2026</span>
       </h1>
       <RaceCountdown />
-      <div className="facts">
-        {facts.map((fact) => (
-          <div className="fact" key={fact.label}>
-            <b>{fact.value}</b>
-            <small>{fact.label}</small>
-          </div>
-        ))}
-      </div>
+      <TrainingRemaining />
     </div>
   );
 }

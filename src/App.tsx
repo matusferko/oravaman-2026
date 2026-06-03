@@ -1,11 +1,14 @@
 import { Hero } from "./components/Hero";
 import { WeekCard } from "./components/WeekCard";
 import { plan } from "./data/plan";
+import { useScrollToToday } from "./hooks/useScrollToToday";
 
 export default function App() {
+  useScrollToToday();
+
   return (
     <div className="wrap">
-      <Hero facts={plan.facts} />
+      <Hero />
 
       <div className="chartcard">
         <img src={`${import.meta.env.BASE_URL}chart.png`} alt="Graf týždenného objemu tréningu" />

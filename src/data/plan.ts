@@ -1,24 +1,6 @@
 import type { PlanContent } from "../types";
 
 export const plan: PlanContent = {
-  "facts": [
-    {
-      "value": "2 km",
-      "label": "Plávanie · L. Mara"
-    },
-    {
-      "value": "86 km / 1850 m",
-      "label": "Bicykel"
-    },
-    {
-      "value": "19,5 km / 1250 m",
-      "label": "Beh · Brestová 1902 m"
-    },
-    {
-      "value": "12:30",
-      "label": "STOP-čas T2"
-    }
-  ],
   "weeks": [
     {
       "tag": "T1",

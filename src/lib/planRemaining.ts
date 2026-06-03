@@ -1,5 +1,6 @@
 import { plan } from "../data/plan";
 import type { DayPlan } from "../types";
+import { dayStartMs, startOfLocalDay } from "./planDates";
 
 export type DisciplineTotals = {
   swimKm: number;
@@ -9,24 +10,11 @@ export type DisciplineTotals = {
   runElevM: number;
 };
 
-const PLAN_YEAR = 2026;
 /** Easy brick/run off the bike (~8 km/h). */
 const RUN_KM_PER_MIN = 8 / 60;
 
 function parseKm(raw: string): number {
   return Number.parseFloat(raw.replace(",", "."));
-}
-
-function parsePlanDate(date: string): Date | null {
-  const m = date.match(/(\d{1,2})\.(\d{1,2})\./);
-  if (!m) return null;
-  const day = Number(m[1]);
-  const month = Number(m[2]);
-  return new Date(PLAN_YEAR, month - 1, day);
-}
-
-function startOfLocalDay(d: Date): Date {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
 function firstKm(text: string): number {
@@ -136,8 +124,8 @@ export function remainingUntrainedTotals(asOf: Date = new Date()): DisciplineTot
   for (const week of plan.weeks) {
     for (const day of week.days) {
       if (!isTrainingDay(day)) continue;
-      const dayDate = parsePlanDate(day.date);
-      if (!dayDate || dayDate.getTime() < cutoff) continue;
+      const ms = dayStartMs(day.date);
+      if (ms === null || ms < cutoff) continue;
 
       const vol = volumesForDay(day);
       totals.swimKm += vol.swimKm;

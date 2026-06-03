@@ -1,17 +1,43 @@
 import type { CSSProperties } from "react";
-import type { WeekPlan } from "../types";
+import type { DayPlan, WeekPlan } from "../types";
+import { isPastDay, isToday } from "../lib/planDates";
 
 type WeekCardProps = {
   week: WeekPlan;
 };
 
-function dayClassName(day: WeekPlan["days"][number]) {
-  if (day.race) return "day race";
-  if (day.key) return "day key";
-  return "day";
+function dayClassName(day: DayPlan) {
+  const parts = ["day"];
+  if (day.race) parts.push("race");
+  else if (day.key) parts.push("key");
+  if (isToday(day.date)) parts.push("today");
+  return parts.join(" ");
+}
+
+function pastDaysLabel(count: number) {
+  if (count === 1) return "1 predchádzajúci deň";
+  if (count >= 2 && count <= 4) return `${count} predchádzajúce dni`;
+  return `${count} predchádzajúcich dní`;
+}
+
+function DayRow({ day }: { day: DayPlan }) {
+  const today = isToday(day.date);
+
+  return (
+    <div className={dayClassName(day)} id={today ? "plan-today" : undefined}>
+      <div className="daydate">{day.date}</div>
+      <div className="pill" style={{ "--c": day.color } as CSSProperties}>
+        {day.type}
+      </div>
+      <div className="sess">{day.session}</div>
+    </div>
+  );
 }
 
 export function WeekCard({ week }: WeekCardProps) {
+  const past = week.days.filter((day) => isPastDay(day.date));
+  const current = week.days.filter((day) => !isPastDay(day.date));
+
   return (
     <section className="week">
       <div className="whead">
@@ -24,14 +50,16 @@ export function WeekCard({ week }: WeekCardProps) {
       </div>
       <div className="wfocus">{week.focus}</div>
       <div className="days">
-        {week.days.map((day) => (
-          <div className={dayClassName(day)} key={day.date}>
-            <div className="daydate">{day.date}</div>
-            <div className="pill" style={{ "--c": day.color } as CSSProperties}>
-              {day.type}
-            </div>
-            <div className="sess">{day.session}</div>
-          </div>
+        {past.length > 0 && (
+          <details className="days-past">
+            <summary>{pastDaysLabel(past.length)}</summary>
+            {past.map((day) => (
+              <DayRow day={day} key={day.date} />
+            ))}
+          </details>
+        )}
+        {current.map((day) => (
+          <DayRow day={day} key={day.date} />
         ))}
       </div>
     </section>

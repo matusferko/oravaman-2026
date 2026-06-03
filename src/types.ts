@@ -16,12 +16,6 @@ export type WeekPlan = {
   days: DayPlan[];
 };
 
-export type Fact = {
-  value: string;
-  label: string;
-};
-
 export type PlanContent = {
-  facts: Fact[];
   weeks: WeekPlan[];
 };

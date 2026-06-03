@@ -90,6 +90,15 @@ h1 span {
   max-width: 640px;
 }
 
+.countdown.training-remaining {
+  margin-top: 14px;
+}
+
+.countdown.training-remaining .countdown-units b {
+  font-size: 1.85rem;
+  color: var(--summit);
+}
+
 .countdown-label {
   display: block;
   font-size: 0.72rem;
@@ -132,36 +141,6 @@ h1 span {
   color: var(--summit);
   font-size: 1.6rem;
   min-width: 0;
-}
-
-.facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
-  position: relative;
-}
-
-.fact {
-  background: #0d131b;
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  padding: 9px 14px;
-  font-size: 0.86rem;
-}
-
-.fact b {
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 1.15rem;
-  letter-spacing: 0.02em;
-}
-
-.fact small {
-  display: block;
-  color: var(--mut);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .callout {
@@ -280,6 +259,37 @@ h2.section::after {
   padding: 6px 10px;
 }
 
+.days-past {
+  border-bottom: 1px dashed #1c2531;
+}
+
+.days-past summary {
+  cursor: pointer;
+  padding: 10px 10px;
+  color: var(--mut);
+  font-size: 0.84rem;
+  letter-spacing: 0.03em;
+  list-style: none;
+  user-select: none;
+}
+
+.days-past summary::-webkit-details-marker {
+  display: none;
+}
+
+.days-past summary::before {
+  content: "▸ ";
+  color: var(--summit);
+}
+
+.days-past[open] summary::before {
+  content: "▾ ";
+}
+
+.days-past[open] summary {
+  border-bottom: 1px dashed #1c2531;
+}
+
 .day {
   display: grid;
   grid-template-columns: 74px 92px 1fr;
@@ -342,6 +352,18 @@ h2.section::after {
   color: var(--race);
 }
 
+.day.today {
+  scroll-margin-top: 24px;
+  scroll-margin-bottom: 24px;
+  background: linear-gradient(90deg, rgba(54, 211, 153, 0.1), transparent);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--summit) 35%, transparent);
+}
+
+.day.today .daydate {
+  color: var(--summit);
+}
+
 .note {
   margin-top: 30px;
   border: 1px solid var(--line);
@@ -374,14 +396,6 @@ h2.section::after {
 
   .sub {
     font-size: 1.08rem;
-  }
-
-  .fact {
-    font-size: 0.92rem;
-  }
-
-  .fact small {
-    font-size: 0.78rem;
   }
 
   .wrange {
