@@ -16,13 +16,6 @@ export type WeekPlan = {
   days: DayPlan[];
 };
 
-export type RaceLeg = {
-  kind: "s" | "b" | "r";
-  title: string;
-  meta: string;
-  detail: string;
-};
-
 export type Fact = {
   value: string;
   label: string;
@@ -31,5 +24,4 @@ export type Fact = {
 export type PlanContent = {
   facts: Fact[];
   weeks: WeekPlan[];
-  legs: RaceLeg[];
 };

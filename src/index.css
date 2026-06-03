@@ -85,6 +85,55 @@ h1 span {
   font-size: 1.02rem;
 }
 
+.countdown {
+  margin-top: 18px;
+  max-width: 640px;
+}
+
+.countdown-label {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: 8px;
+}
+
+.countdown-units {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  font-family: "Barlow Condensed", sans-serif;
+}
+
+.countdown-units span {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.countdown-units b {
+  font-size: 2.35rem;
+  font-weight: 700;
+  color: var(--race);
+  line-height: 1;
+  min-width: 1.1ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-units small {
+  font-size: 0.82rem;
+  color: var(--mut);
+  text-transform: lowercase;
+}
+
+.countdown.done .countdown-units b {
+  color: var(--summit);
+  font-size: 1.6rem;
+  min-width: 0;
+}
+
 .facts {
   display: flex;
   flex-wrap: wrap;
@@ -293,72 +342,6 @@ h2.section::after {
   color: var(--race);
 }
 
-.raceday {
-  border: 1px solid color-mix(in srgb, var(--race) 35%, var(--line));
-  border-radius: 16px;
-  background: linear-gradient(160deg, #0f1a17, #0c1118);
-  padding: 22px 24px;
-  margin-top: 18px;
-}
-
-.raceday h3 {
-  font-family: "Barlow Condensed", sans-serif;
-  color: var(--race);
-  font-size: 1.45rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.raceday-intro {
-  color: var(--mut);
-  font-size: 0.92rem;
-}
-
-.legs {
-  display: grid;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.leg {
-  display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: 14px;
-  padding: 12px 14px;
-  background: #0d131b;
-  border: 1px solid var(--line);
-  border-radius: 11px;
-}
-
-.leg .lt {
-  font-family: "Barlow Condensed", sans-serif;
-  font-weight: 700;
-  font-size: 1.05rem;
-}
-
-.leg.s .lt {
-  color: var(--swim);
-}
-
-.leg.b .lt {
-  color: var(--bike);
-}
-
-.leg.r .lt {
-  color: var(--run);
-}
-
-.leg small {
-  color: var(--mut);
-  display: block;
-  font-size: 0.78rem;
-}
-
-.leg .ld {
-  font-size: 0.9rem;
-}
-
 .note {
   margin-top: 30px;
   border: 1px solid var(--line);
@@ -406,8 +389,7 @@ h2.section::after {
   }
 
   .wfocus,
-  .sess,
-  .leg .ld {
+  .sess {
     font-size: 1rem;
   }
 
@@ -424,9 +406,5 @@ h2.section::after {
   .day {
     grid-template-columns: 64px 84px 1fr;
     gap: 10px;
-  }
-
-  .leg {
-    grid-template-columns: 78px 1fr;
   }
 }

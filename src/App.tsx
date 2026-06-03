@@ -1,5 +1,4 @@
 import { Hero } from "./components/Hero";
-import { RaceDay } from "./components/RaceDay";
 import { WeekCard } from "./components/WeekCard";
 import { plan } from "./data/plan";
 
@@ -7,12 +6,6 @@ export default function App() {
   return (
     <div className="wrap">
       <Hero facts={plan.facts} />
-
-      <div className="callout">
-        <b>Východisko (zo Stravy):</b> špecifická príprava reálne beží od začiatku mája (~4
-        týždne). Najsilnejší bike (104 km), plávanie blízko cieľa, ale <b>beh je pozadu</b> —
-        najdlhší 7,7 km / 158 m oproti pretekovým 19,5 km / 1250 m. Plán to rieši prioritne.
-      </div>
 
       <div className="chartcard">
         <img src={`${import.meta.env.BASE_URL}chart.png`} alt="Graf týždenného objemu tréningu" />
@@ -22,8 +15,6 @@ export default function App() {
       {plan.weeks.map((week) => (
         <WeekCard week={week} key={week.tag} />
       ))}
-
-      <RaceDay legs={plan.legs} />
 
       <div className="note">
         <b>Dôležité.</b> Nie som tréner ani lekár — plán je postavený na tvojich dátach a

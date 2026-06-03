@@ -402,25 +402,5 @@ export const plan: PlanContent = {
         }
       ]
     }
-  ],
-  "legs": [
-    {
-      "kind": "s",
-      "title": "PLÁVANIE",
-      "meta": "2 km · 2 okruhy",
-      "detail": "Neoprén, drž rovnomerné tempo, nešpurtuj. Orientácia (sighting) na bóje."
-    },
-    {
-      "kind": "b",
-      "title": "BICYKEL",
-      "meta": "86 km · 1850 m",
-      "detail": "Jedz a pi od prvej minúty. Stúpania do 12 %, sedlo Huty 3×. Doplnenie na Kolibe Holica. Cieľ: T2 s rezervou pred 12:30."
-    },
-    {
-      "kind": "r",
-      "title": "BEH",
-      "meta": "19,5 km · 1250 m",
-      "detail": "Povinný batoh: 1 l tekutín, bunda, čiapka/buff, mobil, gél. Výstup na Brestovú 1902 m — run/walk, šetri sily. Zbeh opatrne (technika). Občerstvenie: Spálená (10. km), Múzeum oravskej dediny (17. km)."
-    }
   ]
 };
