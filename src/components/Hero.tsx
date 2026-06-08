@@ -1,4 +1,6 @@
+import { ProgressSummary } from "./ProgressSummary";
 import { RaceCountdown } from "./RaceCountdown";
+import { StravaBar } from "./StravaBar";
 import { TrainingRemaining } from "./TrainingRemaining";
 
 export function Hero() {
@@ -20,12 +22,16 @@ export function Hero() {
           <path d="M0,96 C190,62 310,82 430,54 C560,24 690,52 800,28" />
         </g>
       </svg>
-      <div className="kicker">XTRI World Tour <br/>Zuberec · 11. júl 2026</div>
-      <h1>
-        ORAVAMAN <span>2026</span>
-      </h1>
-      <RaceCountdown />
-      <TrainingRemaining />
+      <div className="hero-content">
+        <div className="kicker">XTRI World Tour <br/>Zuberec · 11. júl 2026</div>
+        <h1>
+          ORAVAMAN <span>2026</span>
+        </h1>
+        <StravaBar />
+        <RaceCountdown />
+        <ProgressSummary />
+        <TrainingRemaining />
+      </div>
     </div>
   );
 }

@@ -25,6 +25,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          VITE_STRAVA_CLIENT_ID: ${{ vars.VITE_STRAVA_CLIENT_ID }}
+          VITE_STRAVA_TOKEN_PROXY_URL: ${{ vars.VITE_STRAVA_TOKEN_PROXY_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

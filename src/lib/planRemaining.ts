@@ -1,6 +1,6 @@
 import { plan } from "../data/plan";
 import type { DayPlan } from "../types";
-import { dayStartMs, startOfLocalDay } from "./planDates";
+import { dayKey, dayStartMs, startOfLocalDay } from "./planDates";
 
 export type DisciplineTotals = {
   swimKm: number;
@@ -111,7 +111,10 @@ function isTrainingDay(day: DayPlan): boolean {
   return vol.swimKm + vol.bikeKm + vol.runKm > 0;
 }
 
-export function remainingUntrainedTotals(asOf: Date = new Date()): DisciplineTotals {
+export function remainingUntrainedTotals(
+  asOf: Date = new Date(),
+  completedKeys: ReadonlySet<string> = new Set(),
+): DisciplineTotals {
   const cutoff = startOfLocalDay(asOf).getTime();
   const totals: DisciplineTotals = {
     swimKm: 0,
@@ -126,6 +129,9 @@ export function remainingUntrainedTotals(asOf: Date = new Date()): DisciplineTot
       if (!isTrainingDay(day)) continue;
       const ms = dayStartMs(day.date);
       if (ms === null || ms < cutoff) continue;
+
+      const key = dayKey(day.date);
+      if (key && completedKeys.has(key)) continue;
 
       const vol = volumesForDay(day);
       totals.swimKm += vol.swimKm;
