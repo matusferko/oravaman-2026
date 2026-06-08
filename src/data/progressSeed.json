@@ -7,7 +7,7 @@
   "2026-06-02": {
     "completed": true,
     "source": "strava",
-    "updatedAt": "2026-06-08T15:02:55.893Z",
+    "updatedAt": "2026-06-08T15:13:25.993Z",
     "stravaActivityIds": [
       18755851706
     ],
@@ -23,7 +23,7 @@
   "2026-06-04": {
     "completed": true,
     "source": "strava",
-    "updatedAt": "2026-06-08T15:02:55.893Z",
+    "updatedAt": "2026-06-08T15:13:25.993Z",
     "stravaActivityIds": [
       18784990850
     ],
@@ -39,7 +39,7 @@
   "2026-06-07": {
     "completed": true,
     "source": "strava",
-    "updatedAt": "2026-06-08T15:02:55.893Z",
+    "updatedAt": "2026-06-08T15:13:25.993Z",
     "stravaActivityIds": [
       18820409670
     ],
@@ -68,5 +68,22 @@
       }
     ],
     "completionPct": 79
+  },
+  "2026-06-05": {
+    "completed": true,
+    "source": "strava",
+    "updatedAt": "2026-06-08T15:31:56.775Z",
+    "stravaActivityIds": [
+      18805236190
+    ],
+    "stravaActivities": [
+      {
+        "id": 18805236190,
+        "name": "Morning Izra Run",
+        "distance": 15743.9,
+        "moving_time": 6436
+      }
+    ],
+    "completionPct": 200
   }
 }
