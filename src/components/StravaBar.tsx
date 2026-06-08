@@ -5,6 +5,7 @@ import {
   stravaConfigured,
   verifyPin,
 } from "../lib/strava/auth";
+import { exportProgressJson } from "../progress/storage";
 import { useProgress } from "../progress/ProgressContext";
 
 export function StravaBar() {
@@ -36,6 +37,18 @@ export function StravaBar() {
   const handleDisconnect = () => {
     clearStravaTokens();
     window.location.reload();
+  };
+
+  const handleExport = () => {
+    const blob = new Blob([exportProgressJson()], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "progressSeed.json";
+    a.click();
+    URL.revokeObjectURL(url);
+    setToast("Stav exportovaný — nahraj progressSeed.json do src/data/ a commitni.");
+    setTimeout(() => setToast(null), 6000);
   };
 
   const openPinMode = () => {
@@ -115,6 +128,9 @@ export function StravaBar() {
                 {syncing ? "Synchronizujem…" : "Synchronizovať"}
               </button>
             )}
+            <button type="button" className="strava-btn strava-btn-ghost" onClick={handleExport}>
+              Exportovať stav
+            </button>
             {/* <button type="button" className="strava-btn-icon" onClick={handleDisconnect} title="Odpojiť Stravu">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>

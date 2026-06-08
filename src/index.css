@@ -105,6 +105,73 @@ h1 span {
   color: var(--summit);
 }
 
+.seed-notice {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, #f4a531 45%, var(--line));
+  border-radius: 12px;
+  background: color-mix(in srgb, #f4a531 8%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.seed-notice-text {
+  font-size: 0.82rem;
+  color: var(--txt);
+  line-height: 1.4;
+}
+
+.seed-notice-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.remaining-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Barlow Condensed", sans-serif;
+}
+
+.remaining-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.remaining-icon {
+  align-self: center;
+  display: inline-flex;
+  color: var(--mut);
+  flex-shrink: 0;
+}
+
+.remaining-value {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--summit);
+  line-height: 1;
+  min-width: 3.4ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.remaining-label {
+  font-size: 0.82rem;
+  color: var(--mut);
+  text-transform: lowercase;
+  flex: 1;
+}
+
+.remaining-pct {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--race);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
 .strava-bar {
   margin-top: 16px;
   max-width: 640px;
@@ -503,12 +570,145 @@ h2.section::after {
   gap: 4px;
 }
 
+.unmatched-hint {
+  font-size: 0.72rem;
+  color: var(--mut);
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+
+.unmatched-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .unmatched-activity {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.8rem;
   color: var(--mut);
+  cursor: grab;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 3px 6px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.unmatched-suggest {
+  align-self: flex-start;
+  margin-left: 28px;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fc9a6a;
+  background: none;
+  border: none;
+  padding: 0 0 2px;
+  cursor: pointer;
+}
+
+.unmatched-suggest:hover {
+  text-decoration: underline;
+}
+
+.unmatched-activity:hover {
+  border-color: var(--line);
+  background: #0d131b;
+}
+
+.unmatched-activity:active {
+  cursor: grabbing;
+}
+
+.unmatched-grip {
+  flex-shrink: 0;
+  opacity: 0.4;
+  letter-spacing: -2px;
+}
+
+.day.drag-over {
+  outline: 2px dashed color-mix(in srgb, #fc4c02 60%, var(--line));
+  outline-offset: 2px;
+  border-radius: 8px;
+  background: color-mix(in srgb, #fc4c02 8%, transparent);
+}
+
+.completion-badge {
+  margin-top: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #c3e88d;
+}
+
+.assign-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 16px;
+}
+
+.assign-modal {
+  width: 100%;
+  max-width: 320px;
+  background: #0d131b;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.assign-modal-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.assign-modal-activity {
+  font-size: 0.85rem;
+  color: var(--txt);
+}
+
+.assign-modal-meta {
+  font-size: 0.78rem;
+  color: var(--mut);
+}
+
+.assign-modal-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--mut);
+  margin-top: 4px;
+}
+
+.assign-modal-field input {
+  font: inherit;
+  font-size: 0.9rem;
+  width: 72px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #060a0f;
+  color: var(--txt);
+  padding: 6px 10px;
+  outline: none;
+}
+
+.assign-modal-field input:focus {
+  border-color: color-mix(in srgb, #fc4c02 50%, var(--line));
+}
+
+.assign-modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
 }
 
 .unmatched-sport {

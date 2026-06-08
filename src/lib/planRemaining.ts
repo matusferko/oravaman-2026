@@ -111,9 +111,15 @@ function isTrainingDay(day: DayPlan): boolean {
   return vol.swimKm + vol.bikeKm + vol.runKm > 0;
 }
 
+/**
+ * Volume still to train from `asOf` onward.
+ *
+ * `completedFraction(key)` returns how much of a day is done (0 = untouched,
+ * 1 = fully complete); only the unfinished remainder of each day is counted.
+ */
 export function remainingUntrainedTotals(
   asOf: Date = new Date(),
-  completedKeys: ReadonlySet<string> = new Set(),
+  completedFraction: (key: string) => number = () => 0,
 ): DisciplineTotals {
   const cutoff = startOfLocalDay(asOf).getTime();
   const totals: DisciplineTotals = {
@@ -131,14 +137,15 @@ export function remainingUntrainedTotals(
       if (ms === null || ms < cutoff) continue;
 
       const key = dayKey(day.date);
-      if (key && completedKeys.has(key)) continue;
+      const remaining = key ? 1 - Math.min(1, Math.max(0, completedFraction(key))) : 1;
+      if (remaining <= 0) continue;
 
       const vol = volumesForDay(day);
-      totals.swimKm += vol.swimKm;
-      totals.bikeKm += vol.bikeKm;
-      totals.runKm += vol.runKm;
-      totals.bikeElevM += vol.bikeElevM;
-      totals.runElevM += vol.runElevM;
+      totals.swimKm += vol.swimKm * remaining;
+      totals.bikeKm += vol.bikeKm * remaining;
+      totals.runKm += vol.runKm * remaining;
+      totals.bikeElevM += vol.bikeElevM * remaining;
+      totals.runElevM += vol.runElevM * remaining;
     }
   }
 

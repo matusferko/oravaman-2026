@@ -13,6 +13,7 @@ export type StravaActivity = {
   start_date_local: string;
   distance: number;
   moving_time: number;
+  total_elevation_gain: number;
 };
 
 export type StravaTokenResponse = {

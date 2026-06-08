@@ -1,0 +1,72 @@
+{
+  "2026-06-09": {
+    "completed": false,
+    "source": "manual",
+    "updatedAt": "2026-06-08T09:53:34.628Z"
+  },
+  "2026-06-02": {
+    "completed": true,
+    "source": "strava",
+    "updatedAt": "2026-06-08T15:02:55.893Z",
+    "stravaActivityIds": [
+      18755851706
+    ],
+    "stravaActivities": [
+      {
+        "id": 18755851706,
+        "name": "Afternoon Swim",
+        "distance": 1527.3,
+        "moving_time": 2399
+      }
+    ]
+  },
+  "2026-06-04": {
+    "completed": true,
+    "source": "strava",
+    "updatedAt": "2026-06-08T15:02:55.893Z",
+    "stravaActivityIds": [
+      18784990850
+    ],
+    "stravaActivities": [
+      {
+        "id": 18784990850,
+        "name": "Afternoon Swim",
+        "distance": 1222,
+        "moving_time": 1746
+      }
+    ]
+  },
+  "2026-06-07": {
+    "completed": true,
+    "source": "strava",
+    "updatedAt": "2026-06-08T15:02:55.893Z",
+    "stravaActivityIds": [
+      18820409670
+    ],
+    "stravaActivities": [
+      {
+        "id": 18820409670,
+        "name": "Morning Swim",
+        "distance": 1022.4,
+        "moving_time": 1535
+      }
+    ]
+  },
+  "2026-06-03": {
+    "completed": true,
+    "source": "strava",
+    "updatedAt": "2026-06-08T14:50:04.690Z",
+    "stravaActivityIds": [
+      18825064875
+    ],
+    "stravaActivities": [
+      {
+        "id": 18825064875,
+        "name": "Kojšofka",
+        "distance": 55339,
+        "moving_time": 10570
+      }
+    ],
+    "completionPct": 79
+  }
+}

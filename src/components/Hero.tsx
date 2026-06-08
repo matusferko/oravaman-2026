@@ -1,5 +1,6 @@
 import { ProgressSummary } from "./ProgressSummary";
 import { RaceCountdown } from "./RaceCountdown";
+import { SeedNotice } from "./SeedNotice";
 import { StravaBar } from "./StravaBar";
 import { TrainingRemaining } from "./TrainingRemaining";
 
@@ -28,6 +29,7 @@ export function Hero() {
           ORAVAMAN <span>2026</span>
         </h1>
         <StravaBar />
+        <SeedNotice />
         <RaceCountdown />
         <ProgressSummary />
         <TrainingRemaining />

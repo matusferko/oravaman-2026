@@ -13,6 +13,7 @@ export type ProgressEntry = {
   updatedAt: string;
   stravaActivityIds?: number[];
   stravaActivities?: StravaActivitySummary[];
+  completionPct?: number;
 };
 
 export type ProgressStore = Record<string, ProgressEntry>;

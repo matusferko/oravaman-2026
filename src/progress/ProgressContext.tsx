@@ -15,7 +15,14 @@ import {
 } from "../lib/strava/auth";
 import { matchStravaToPlan } from "../lib/strava/match";
 import { listPlanWorkouts } from "./planWorkouts";
-import { completedKeys, loadProgress, mergeEntry, saveProgress } from "./storage";
+import {
+  completedKeys,
+  loadProgress,
+  mergeEntry,
+  saveProgress,
+  seedNewerThanLocal,
+  seedStore,
+} from "./storage";
 import type { ProgressEntry, ProgressStore } from "./types";
 import type { StravaActivity } from "../lib/strava/types";
 
@@ -23,6 +30,7 @@ type ProgressContextValue = {
   isDone: (dayKey: string | null) => boolean;
   entryFor: (dayKey: string | null) => ProgressEntry | undefined;
   toggle: (dayKey: string) => void;
+  assignActivity: (dayKey: string, activity: StravaActivity, completionPct?: number) => void;
   doneCount: number;
   totalWorkouts: number;
   completedDayKeys: Set<string>;
@@ -34,6 +42,9 @@ type ProgressContextValue = {
   lastSyncedAt: string | null;
   syncFromStrava: () => Promise<{ matched: number; fetched: number }>;
   fetchedActivities: StravaActivity[];
+  seedNotice: { seedAt: number; localAt: number } | null;
+  applySeed: () => void;
+  dismissSeed: () => void;
 };
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
@@ -56,6 +67,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     () => localStorage.getItem("oravaman-strava-last-sync"),
   );
   const [connected, setConnected] = useState(stravaConnected);
+  const [seedNotice, setSeedNotice] = useState(() => seedNewerThanLocal());
 
   const totalWorkouts = useMemo(() => listPlanWorkouts().length, []);
   const completedDayKeys = useMemo(() => completedKeys(store), [store]);
@@ -138,11 +150,47 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [persist, store],
   );
 
+  const assignActivity = useCallback(
+    (dayKey: string, activity: StravaActivity, completionPct?: number) => {
+      const current = store[dayKey];
+      const existingIds = current?.stravaActivityIds ?? [];
+      if (existingIds.includes(activity.id)) return;
+
+      const nextEntry: ProgressEntry = {
+        completed: true,
+        source: "strava",
+        updatedAt: new Date().toISOString(),
+        stravaActivityIds: [...existingIds, activity.id],
+        stravaActivities: [
+          ...(current?.stravaActivities ?? []),
+          {
+            id: activity.id,
+            name: activity.name,
+            distance: activity.distance,
+            moving_time: activity.moving_time,
+          },
+        ],
+        completionPct,
+      };
+
+      persist({ ...store, [dayKey]: nextEntry });
+    },
+    [persist, store],
+  );
+
+  const applySeed = useCallback(() => {
+    persist(seedStore());
+    setSeedNotice(null);
+  }, [persist]);
+
+  const dismissSeed = useCallback(() => setSeedNotice(null), []);
+
   const value = useMemo(
     () => ({
       isDone,
       entryFor,
       toggle,
+      assignActivity,
       doneCount,
       totalWorkouts,
       completedDayKeys,
@@ -152,6 +200,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       lastSyncedAt,
       syncFromStrava,
       fetchedActivities,
+      seedNotice,
+      applySeed,
+      dismissSeed,
       connected,
       setConnected,
     }),
@@ -159,6 +210,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       isDone,
       entryFor,
       toggle,
+      assignActivity,
       doneCount,
       totalWorkouts,
       completedDayKeys,
@@ -168,6 +220,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       lastSyncedAt,
       syncFromStrava,
       fetchedActivities,
+      seedNotice,
+      applySeed,
+      dismissSeed,
       connected,
       setConnected,
     ],
