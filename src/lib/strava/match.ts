@@ -2,7 +2,6 @@ import type { WorkoutSport } from "../../progress/planWorkouts";
 import { listPlanWorkouts } from "../../progress/planWorkouts";
 import type { ProgressEntry } from "../../progress/types";
 import type { StravaActivity } from "./types";
-export type { DayActivityIndex };
 
 export type DayActivityIndex = Map<string, Map<WorkoutSport, StravaActivity[]>>;
 
