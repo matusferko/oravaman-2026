@@ -52,6 +52,12 @@ body {
   width: 100%;
   height: 100%;
   opacity: 0.18;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
 }
 
 .kicker {
@@ -97,6 +103,115 @@ h1 span {
 .countdown.training-remaining .countdown-units b {
   font-size: 1.85rem;
   color: var(--summit);
+}
+
+.strava-bar {
+  margin-top: 16px;
+  max-width: 640px;
+}
+
+.strava-bar-muted {
+  color: var(--mut);
+  font-size: 0.82rem;
+}
+
+.strava-bar-muted code {
+  font-size: 0.78rem;
+}
+
+.strava-bar-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.strava-status {
+  font-size: 0.82rem;
+  color: var(--mut);
+}
+
+.strava-connected {
+  color: var(--summit);
+}
+
+.strava-btn {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: #0d131b;
+  color: var(--txt);
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.strava-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.strava-btn-connect {
+  border-color: color-mix(in srgb, #fc4c02 50%, var(--line));
+  color: #fc9a6a;
+}
+
+.strava-btn-ghost {
+  color: var(--mut);
+}
+
+.strava-meta,
+.strava-error,
+.strava-toast {
+  margin-top: 6px;
+  font-size: 0.78rem;
+}
+
+.strava-toast {
+  color: #c3e88d;
+}
+
+.strava-meta {
+  color: var(--mut);
+}
+
+.strava-error {
+  color: #f07178;
+}
+
+.progress-summary {
+  margin-top: 14px;
+  max-width: 640px;
+}
+
+.progress-summary-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.progress-summary-count {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.2rem;
+  color: var(--summit);
+}
+
+.progress-bar {
+  margin-top: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #0d131b;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--summit), var(--race));
+  border-radius: 999px;
+  transition: width 0.25s ease;
 }
 
 .countdown-label {
@@ -292,11 +407,96 @@ h2.section::after {
 
 .day {
   display: grid;
-  grid-template-columns: 74px 92px 1fr;
-  gap: 12px;
-  align-items: center;
+  grid-template-columns: 28px 1fr;
+  gap: 8px 10px;
+  align-items: start;
   padding: 10px 10px;
   border-bottom: 1px dashed #1c2531;
+}
+
+.day-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.day-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.day-toggle {
+  width: 24px;
+  height: 24px;
+  margin-top: 3px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #0d131b;
+  color: var(--summit);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-toggle.spacer {
+  border-color: transparent;
+  background: transparent;
+  cursor: default;
+}
+
+.day-toggle.done {
+  background: color-mix(in srgb, var(--summit) 18%, #0d131b);
+  border-color: color-mix(in srgb, var(--summit) 45%, var(--line));
+}
+
+.day-toggle.strava.done {
+  border-color: color-mix(in srgb, #fc4c02 45%, var(--line));
+  color: #fc9a6a;
+}
+
+.strava-activity-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  color: #fc9a6a;
+}
+
+.strava-activity-name {
+  opacity: 0.85;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.strava-activity-stat {
+  white-space: nowrap;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.strava-activity-stat::before {
+  content: "·";
+  margin-right: 8px;
+  opacity: 0.5;
+}
+
+.day.completed {
+  opacity: 0.72;
+}
+
+.day.completed .sess {
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--mut) 70%, transparent);
 }
 
 .day:last-child {
@@ -418,7 +618,6 @@ h2.section::after {
   }
 
   .day {
-    grid-template-columns: 64px 84px 1fr;
-    gap: 10px;
+    gap: 6px 10px;
   }
 }

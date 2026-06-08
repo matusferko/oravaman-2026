@@ -28,3 +28,17 @@ export function isToday(date: string, asOf: Date = new Date()): boolean {
   if (ms === null) return false;
   return ms === startOfLocalDay(asOf).getTime();
 }
+
+/** Stable ISO key for progress + Strava matching. */
+export function dayKey(date: string): string | null {
+  const parsed = parsePlanDate(date);
+  if (!parsed) return null;
+  const y = parsed.getFullYear();
+  const m = String(parsed.getMonth() + 1).padStart(2, "0");
+  const d = String(parsed.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+export function planStartDayKey(): string {
+  return "2026-06-01";
+}

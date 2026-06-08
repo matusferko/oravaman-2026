@@ -3,9 +3,11 @@ import {
   formatKm,
   remainingUntrainedTotals,
 } from "../lib/planRemaining";
+import { useProgress } from "../progress/ProgressContext";
 
 export function TrainingRemaining() {
-  const totals = remainingUntrainedTotals();
+  const { completedDayKeys } = useProgress();
+  const totals = remainingUntrainedTotals(new Date(), completedDayKeys);
 
   const units = [
     {
