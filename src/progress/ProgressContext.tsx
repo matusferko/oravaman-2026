@@ -17,6 +17,7 @@ import { matchStravaToPlan } from "../lib/strava/match";
 import { listPlanWorkouts } from "./planWorkouts";
 import { completedKeys, loadProgress, mergeEntry, saveProgress } from "./storage";
 import type { ProgressEntry, ProgressStore } from "./types";
+import type { StravaActivity } from "../lib/strava/types";
 
 type ProgressContextValue = {
   isDone: (dayKey: string | null) => boolean;
@@ -32,6 +33,7 @@ type ProgressContextValue = {
   syncError: string | null;
   lastSyncedAt: string | null;
   syncFromStrava: () => Promise<{ matched: number; fetched: number }>;
+  fetchedActivities: StravaActivity[];
 };
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
@@ -46,6 +48,7 @@ function applyStravaMatches(store: ProgressStore, matches: Record<string, Progre
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [store, setStore] = useState<ProgressStore>(() => loadProgress());
+  const [fetchedActivities, setFetchedActivities] = useState<StravaActivity[]>([]);
   const [syncing, setSyncing] = useState(false);
   const [syncStatus, setSyncStatus] = useState<string | null>(null);
   const [syncError, setSyncError] = useState<string | null>(null);
@@ -71,6 +74,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       const activities = await fetchAthleteActivities(undefined, (fetched) => {
         setSyncStatus(`Sťahujem aktivity… (${fetched})`);
       });
+      setFetchedActivities(activities);
       setSyncStatus("Porovnávam s plánom…");
       const matches = matchStravaToPlan(activities);
       setStore((current) => {
@@ -147,6 +151,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       syncError,
       lastSyncedAt,
       syncFromStrava,
+      fetchedActivities,
       connected,
       setConnected,
     }),
@@ -162,6 +167,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       syncError,
       lastSyncedAt,
       syncFromStrava,
+      fetchedActivities,
       connected,
       setConnected,
     ],

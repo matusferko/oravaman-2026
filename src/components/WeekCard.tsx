@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { DayPlan, WeekPlan } from "../types";
 import { dayKey, isPastDay, isToday } from "../lib/planDates";
+import { stravaSport } from "../lib/strava/match";
 import { useProgress } from "../progress/ProgressContext";
 import { isTrackableWorkout } from "../progress/planWorkouts";
 
@@ -82,8 +83,18 @@ function DayRow({ day }: { day: DayPlan }) {
 }
 
 export function WeekCard({ week }: WeekCardProps) {
+  const { fetchedActivities, entryFor } = useProgress();
   const past = week.days.filter((day) => isPastDay(day.date));
   const current = week.days.filter((day) => !isPastDay(day.date));
+
+  const weekDayKeys = new Set(week.days.map((d) => dayKey(d.date)).filter(Boolean) as string[]);
+  const matchedIds = new Set(
+    [...weekDayKeys].flatMap((k) => entryFor(k)?.stravaActivityIds ?? []),
+  );
+  const unmatched = fetchedActivities.filter((a) => {
+    const date = a.start_date_local.slice(0, 10);
+    return weekDayKeys.has(date) && !matchedIds.has(a.id) && stravaSport(a) !== null;
+  });
 
   return (
     <section className="week">
@@ -96,6 +107,18 @@ export function WeekCard({ week }: WeekCardProps) {
         <div className="whours">{week.hours}</div>
       </div>
       <div className="wfocus">{week.focus}</div>
+      {unmatched.length > 0 && (
+        <div className="unmatched-activities">
+          {unmatched.map((a) => (
+            <div key={a.id} className="unmatched-activity">
+              <span className="unmatched-sport">{stravaSport(a)}</span>
+              <span className="unmatched-name">{a.name}</span>
+              {a.distance > 0 && <span className="unmatched-stat">{formatDistance(a.distance)}</span>}
+              <span className="unmatched-stat">{formatTime(a.moving_time)}</span>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="days">
         {past.length > 0 && (
           <details className="days-past">

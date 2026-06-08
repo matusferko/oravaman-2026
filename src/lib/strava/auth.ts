@@ -125,6 +125,19 @@ export async function ensureAccessToken(): Promise<string> {
   return refreshed.accessToken;
 }
 
+export async function verifyPin(pin: string): Promise<void> {
+  const base = tokenProxyUrl().replace(/\/token$/, "");
+  const res = await fetch(`${base}/verify-pin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ pin }),
+  });
+  if (!res.ok) {
+    const data = (await res.json()) as { error?: string };
+    throw new Error(data.error ?? "PIN overenie zlyhalo");
+  }
+}
+
 export function consumeOAuthCallback(): { code: string; state: string } | null {
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");

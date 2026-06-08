@@ -27,6 +27,14 @@ export async function fetchAthleteActivities(
       throw new Error(`Strava API ${res.status}`);
     }
 
+    const limit = res.headers.get("X-RateLimit-Limit");
+    const usage = res.headers.get("X-RateLimit-Usage");
+    if (limit && usage) {
+      const [limitMin, limitDay] = limit.split(",");
+      const [usedMin, usedDay] = usage.split(",");
+      console.debug(`[Strava] rate limits — 15min: ${usedMin}/${limitMin}, daily: ${usedDay}/${limitDay}`);
+    }
+
     const batch = (await res.json()) as StravaActivity[];
     if (batch.length === 0) break;
     all.push(...batch);

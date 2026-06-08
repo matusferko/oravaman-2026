@@ -25,12 +25,35 @@ function stravaTokenProxy(): Plugin {
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const url = req.url ?? "";
+        const env = loadEnv(server.config.mode, process.cwd(), "");
+
+        if (url.endsWith("/api/strava/verify-pin") && req.method === "POST") {
+          const syncPin = env.SYNC_PIN;
+          if (!syncPin) {
+            res.statusCode = 500;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ error: "SYNC_PIN not configured on server" }));
+            return;
+          }
+          try {
+            const body = await readJsonBody(req);
+            const ok = body.pin === syncPin;
+            res.statusCode = ok ? 200 : 401;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify(ok ? { ok: true } : { error: "Nesprávny PIN" }));
+          } catch {
+            res.statusCode = 400;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ error: "Invalid request" }));
+          }
+          return;
+        }
+
         if (!url.endsWith("/api/strava/token") || req.method !== "POST") {
           next();
           return;
         }
 
-        const env = loadEnv(server.config.mode, process.cwd(), "");
         const clientId = env.VITE_STRAVA_CLIENT_ID || env.STRAVA_CLIENT_ID;
         const clientSecret = env.STRAVA_CLIENT_SECRET;
 

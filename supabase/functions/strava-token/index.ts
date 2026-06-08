@@ -17,6 +17,24 @@ Deno.serve(async (req) => {
     });
   }
 
+  const path = new URL(req.url).pathname;
+
+  if (path.endsWith("/verify-pin")) {
+    const syncPin = Deno.env.get("SYNC_PIN");
+    if (!syncPin) {
+      return new Response(JSON.stringify({ error: "SYNC_PIN not configured on server" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const body = (await req.json()) as Record<string, string>;
+    const ok = body.pin === syncPin;
+    return new Response(JSON.stringify(ok ? { ok: true } : { error: "Nesprávny PIN" }), {
+      status: ok ? 200 : 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const clientId = Deno.env.get("STRAVA_CLIENT_ID");
   const clientSecret = Deno.env.get("STRAVA_CLIENT_SECRET");
   if (!clientId || !clientSecret) {
