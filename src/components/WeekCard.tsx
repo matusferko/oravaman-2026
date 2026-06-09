@@ -6,8 +6,22 @@ import { stravaSport } from "../lib/strava/match";
 import { volumesForDay } from "../lib/planRemaining";
 import { useProgress } from "../progress/ProgressContext";
 import { isTrackableWorkout, sportsForDay } from "../progress/planWorkouts";
+import { SwimIcon, BikeIcon, RunIcon } from "./SportIcons";
 
 const DRAG_MIME = "application/x-strava-activity-id";
+
+const WEEK_COLORS: Record<string, string> = {
+  T1: "#3b8fd4",
+  T2: "#f4a531",
+  T3: "#e05c5c",
+  T4: "#7ec44e",
+  T5: "#9b7fe8",
+  T6: "#fc4c02",
+};
+
+function weekColor(tag: string): string {
+  return WEEK_COLORS[tag] ?? "#3b8fd4";
+}
 
 /** Planned km for the activity's discipline, or 0 if the day has no target for it. */
 function plannedKm(day: DayPlan, activity: StravaActivity): number {
@@ -168,8 +182,11 @@ function suggestDay(
 
 export function WeekCard({ week }: WeekCardProps) {
   const { fetchedActivities, entryFor, isDone, assignActivity } = useProgress();
-  const past = week.days.filter((day) => isPastDay(day.date));
-  const current = week.days.filter((day) => !isPastDay(day.date));
+  const color = weekColor(week.tag);
+
+  const trackableDays = week.days.filter(isTrackableWorkout);
+  const past = week.days.filter((day) => isTrackableWorkout(day) && isPastDay(day.date));
+  const current = week.days.filter((day) => isTrackableWorkout(day) && !isPastDay(day.date));
 
   const weekDayKeys = new Set(week.days.map((d) => dayKey(d.date)).filter(Boolean) as string[]);
   const matchedIds = new Set(
@@ -180,9 +197,8 @@ export function WeekCard({ week }: WeekCardProps) {
     return weekDayKeys.has(date) && !matchedIds.has(a.id) && stravaSport(a) !== null;
   });
 
-  const [pending, setPending] = useState<{ day: DayPlan; activity: StravaActivity; pct: number } | null>(
-    null,
-  );
+  const [pending, setPending] = useState<{ day: DayPlan; activity: StravaActivity; pct: number } | null>(null);
+  const [focusOpen, setFocusOpen] = useState(false);
 
   const requestAssign = (day: DayPlan, activity: StravaActivity) => {
     setPending({ day, activity, pct: completionPctFor(day, activity) });
@@ -196,8 +212,40 @@ export function WeekCard({ week }: WeekCardProps) {
     setPending(null);
   };
 
+  const weekSwimKm = trackableDays.reduce((s, d) => s + volumesForDay(d).swimKm, 0);
+  const weekBikeKm = trackableDays.reduce((s, d) => s + volumesForDay(d).bikeKm, 0);
+  const weekRunKm  = trackableDays.reduce((s, d) => s + volumesForDay(d).runKm, 0);
+  const weekTotalKm = weekSwimKm + weekBikeKm + weekRunKm;
+  const doneCount  = trackableDays.filter((d) => isDone(dayKey(d.date))).length;
+
+  const { doneSwimKm, doneBikeKm, doneRunKm } = trackableDays.reduce(
+    (acc, d) => {
+      const k = dayKey(d.date);
+      if (!k || !isDone(k)) return acc;
+      const frac = (() => {
+        const pct = entryFor(k)?.completionPct;
+        return typeof pct === "number" ? pct / 100 : 1;
+      })();
+      const vol = volumesForDay(d);
+      return {
+        doneSwimKm: acc.doneSwimKm + vol.swimKm * frac,
+        doneBikeKm: acc.doneBikeKm + vol.bikeKm * frac,
+        doneRunKm:  acc.doneRunKm  + vol.runKm  * frac,
+      };
+    },
+    { doneSwimKm: 0, doneBikeKm: 0, doneRunKm: 0 },
+  );
+
+  const pct = (done: number, planned: number) =>
+    planned > 0 ? Math.round((done / planned) * 100) : null;
+
+  const swimPct  = pct(doneSwimKm, weekSwimKm);
+  const bikePct  = pct(doneBikeKm, weekBikeKm);
+  const runPct   = pct(doneRunKm,  weekRunKm);
+  const weekPct  = pct(doneSwimKm + doneBikeKm + doneRunKm, weekTotalKm);
+
   return (
-    <section className="week">
+    <section className="week" style={{ "--week-color": color } as CSSProperties}>
       <div className="whead">
         <div className="wtag">{week.tag}</div>
         <div className="wmeta">
@@ -205,8 +253,27 @@ export function WeekCard({ week }: WeekCardProps) {
           <div className="wphase">{week.phase}</div>
         </div>
         <div className="whours">{week.hours}</div>
+        <div className="wfocus-toggle">
+          <button
+            type="button"
+            className={`wfocus-btn${focusOpen ? " active" : ""}`}
+            onClick={() => setFocusOpen((o) => !o)}
+            aria-label="Zobraziť zameranie týždňa"
+          >?</button>
+          {focusOpen && (
+            <div className="wfocus-popover" onClick={() => setFocusOpen(false)}>
+              {week.focus}
+            </div>
+          )}
+        </div>
       </div>
-      <div className="wfocus">{week.focus}</div>
+      <div className="wstats">
+        {weekSwimKm > 0 && <span className="wstat"><span className="wstat-icon"><SwimIcon size={14} /></span>{weekSwimKm.toFixed(1)} km{swimPct !== null && <span className="wstat-pct">{swimPct} %</span>}</span>}
+        {weekBikeKm > 0 && <span className="wstat"><span className="wstat-icon"><BikeIcon size={14} /></span>{weekBikeKm.toFixed(0)} km{bikePct !== null && <span className="wstat-pct">{bikePct} %</span>}</span>}
+        {weekRunKm  > 0 && <span className="wstat"><span className="wstat-icon"><RunIcon  size={14} /></span>{weekRunKm.toFixed(1)} km{runPct  !== null && <span className="wstat-pct">{runPct} %</span>}</span>}
+        {/* {weekTotalKm > 0 && <span className="wstat wstat-total">{weekTotalKm.toFixed(0)} km</span>} */}
+        <span className="wstat wstat-done">{doneCount}/{trackableDays.length} · {weekPct ?? 0} %</span>
+      </div>
       {unmatched.length > 0 && (
         <div className="unmatched-activities">
           <div className="unmatched-hint">Pretiahni aktivitu na deň v pláne</div>

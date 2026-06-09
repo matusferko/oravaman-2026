@@ -404,6 +404,7 @@ h2.section::after {
 
 .week {
   border: 1px solid var(--line);
+  border-left: 3px solid var(--week-color, var(--line));
   border-radius: 16px;
   background: var(--card);
   margin: 16px 0;
@@ -415,7 +416,7 @@ h2.section::after {
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
-  background: linear-gradient(90deg, #161e29, #11171f);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--week-color, #3b8fd4) 12%, #161e29), #11171f);
   border-bottom: 1px solid var(--line);
 }
 
@@ -423,13 +424,54 @@ h2.section::after {
   font-family: "Barlow Condensed", sans-serif;
   font-weight: 700;
   font-size: 1.5rem;
-  color: var(--summit);
-  background: #0d131b;
-  border: 1px solid var(--line);
+  color: var(--week-color, var(--summit));
+  background: color-mix(in srgb, var(--week-color, #3b8fd4) 12%, #0d131b);
+  border: 1px solid color-mix(in srgb, var(--week-color, var(--line)) 40%, var(--line));
   border-radius: 10px;
   padding: 4px 12px;
   min-width: 54px;
   text-align: center;
+}
+
+.wstats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--line);
+  background: #0a0f16;
+}
+
+.wstat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: var(--mut);
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 600;
+}
+
+.wstat-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.wstat-pct {
+  font-size: 0.7rem;
+  color: var(--week-color, var(--summit));
+  opacity: 0.85;
+}
+
+.wstat-total {
+  margin-left: auto;
+  color: var(--txt);
+  opacity: 0.5;
+}
+
+.wstat-done {
+  color: var(--week-color, var(--summit));
+  font-weight: 700;
 }
 
 .wmeta {
@@ -462,12 +504,46 @@ h2.section::after {
   white-space: nowrap;
 }
 
-.wfocus {
-  padding: 13px 20px;
+.wfocus-toggle {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.wfocus-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #0d131b;
   color: var(--mut);
-  font-size: 0.93rem;
-  border-bottom: 1px solid var(--line);
-  background: #0f151d;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.wfocus-btn.active,
+.wfocus-btn:hover {
+  border-color: var(--week-color, var(--line));
+  color: var(--week-color, var(--txt));
+}
+
+.wfocus-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 260px;
+  background: #0d131b;
+  border: 1px solid color-mix(in srgb, var(--week-color, var(--line)) 50%, var(--line));
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  color: var(--mut);
+  line-height: 1.5;
+  z-index: 20;
+  cursor: default;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 
 .days {
