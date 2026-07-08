@@ -1,13 +1,15 @@
+import { useState } from "react";
 import { Hero } from "./components/Hero";
 import { WeekCard } from "./components/WeekCard";
+import { PackingList } from "./components/PackingList";
 import { plan } from "./data/plan";
 import { useScrollToToday } from "./hooks/useScrollToToday";
 
-export default function App() {
+function PlanView() {
   useScrollToToday();
 
   return (
-    <div className="wrap">
+    <>
       <Hero />
 
       <div className="chartcard">
@@ -27,6 +29,35 @@ export default function App() {
         a regenerácia sú súčasťou plánu rovnako ako tréning. Čísla (km/prevýšenie/čas) ber ako
         orientačné mantinely, nie dogmu.
       </div>
+    </>
+  );
+}
+
+type Tab = "plan" | "packing";
+
+export default function App() {
+  const [tab, setTab] = useState<Tab>("plan");
+
+  return (
+    <div className="wrap">
+      <nav className="tabs" aria-label="Sekcie">
+        <button
+          type="button"
+          className={tab === "plan" ? "tab active" : "tab"}
+          onClick={() => setTab("plan")}
+        >
+          Plán
+        </button>
+        <button
+          type="button"
+          className={tab === "packing" ? "tab active" : "tab"}
+          onClick={() => setTab("packing")}
+        >
+          Balenie
+        </button>
+      </nav>
+
+      {tab === "plan" ? <PlanView /> : <PackingList />}
 
       <div className="foot">
         Vytvorené z exportu Strava · activities.csv · 6 týždňov do 11. 7. 2026

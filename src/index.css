@@ -444,8 +444,9 @@ h2.section::after {
 
 .wstat {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   font-size: 0.8rem;
   color: var(--mut);
   font-family: "Barlow Condensed", sans-serif;
@@ -455,6 +456,12 @@ h2.section::after {
 .wstat-icon {
   display: inline-flex;
   align-items: center;
+}
+
+.wstat-values {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .wstat-pct {
@@ -933,6 +940,160 @@ h2.section::after {
   color: #5d6776;
   font-size: 0.78rem;
   margin-top: 34px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+  background: #0d131b;
+  border-radius: 999px;
+  padding: 5px;
+}
+
+.tab {
+  flex: 1;
+  font: inherit;
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mut);
+  background: none;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.tab:hover {
+  color: var(--txt);
+}
+
+.tab.active {
+  color: #0b0e13;
+  background: linear-gradient(90deg, var(--summit), var(--race));
+}
+
+.pack-cat {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--cat-color, var(--summit));
+  border-radius: 16px;
+  background: var(--card);
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.pack-cat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--cat-color, #3b8fd4) 12%, #161e29), #11171f);
+  border-bottom: 1px solid var(--line);
+}
+
+.pack-cat-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+}
+
+.pack-cat-count {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--cat-color, var(--summit));
+  background: #0d131b;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 3px 12px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.pack-list {
+  list-style: none;
+  padding: 6px 10px;
+  margin: 0;
+}
+
+.pack-item {
+  border-bottom: 1px dashed #1c2531;
+}
+
+.pack-item:last-child {
+  border-bottom: none;
+}
+
+.pack-item label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pack-item input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.pack-check {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #0d131b;
+  color: var(--cat-color, var(--summit));
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pack-item.done .pack-check {
+  background: color-mix(in srgb, var(--cat-color, var(--summit)) 20%, #0d131b);
+  border-color: color-mix(in srgb, var(--cat-color, var(--summit)) 50%, var(--line));
+}
+
+.pack-item input:focus-visible + .pack-check {
+  outline: 2px solid color-mix(in srgb, var(--cat-color, var(--summit)) 60%, var(--line));
+  outline-offset: 2px;
+}
+
+.pack-label {
+  font-size: 0.98rem;
+}
+
+.pack-item.done .pack-label {
+  color: var(--mut);
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--mut) 70%, transparent);
+}
+
+.pack-note {
+  color: var(--mut);
+  font-style: normal;
+  font-size: 0.85rem;
+}
+
+.pack-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 @media (max-width: 560px) {
