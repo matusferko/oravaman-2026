@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Hero } from "./components/Hero";
 import { WeekCard } from "./components/WeekCard";
 import { PackingList } from "./components/PackingList";
@@ -35,8 +35,32 @@ function PlanView() {
 
 type Tab = "plan" | "packing";
 
+const DEFAULT_TAB: Tab = "packing";
+
+function readTabFromUrl(): Tab {
+  const value = new URLSearchParams(window.location.search).get("tab");
+  return value === "plan" ? "plan" : DEFAULT_TAB;
+}
+
 export default function App() {
-  const [tab, setTab] = useState<Tab>("plan");
+  const [tab, setTab] = useState<Tab>(readTabFromUrl);
+
+  useEffect(() => {
+    const onPopState = () => setTab(readTabFromUrl());
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  const selectTab = useCallback((next: Tab) => {
+    setTab(next);
+    const url = new URL(window.location.href);
+    if (next === DEFAULT_TAB) {
+      url.searchParams.delete("tab");
+    } else {
+      url.searchParams.set("tab", next);
+    }
+    window.history.pushState(null, "", url);
+  }, []);
 
   return (
     <div className="wrap">
@@ -44,14 +68,14 @@ export default function App() {
         <button
           type="button"
           className={tab === "plan" ? "tab active" : "tab"}
-          onClick={() => setTab("plan")}
+          onClick={() => selectTab("plan")}
         >
           Plán
         </button>
         <button
           type="button"
           className={tab === "packing" ? "tab active" : "tab"}
-          onClick={() => setTab("packing")}
+          onClick={() => selectTab("packing")}
         >
           Balenie
         </button>
