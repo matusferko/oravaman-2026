@@ -268,9 +268,9 @@ export function WeekCard({ week }: WeekCardProps) {
         </div>
       </div>
       <div className="wstats">
-        {weekSwimKm > 0 && <span className="wstat"><span className="wstat-icon"><SwimIcon size={14} /></span>{weekSwimKm.toFixed(1)} km{swimPct !== null && <span className="wstat-pct">{swimPct} %</span>}</span>}
-        {weekBikeKm > 0 && <span className="wstat"><span className="wstat-icon"><BikeIcon size={14} /></span>{weekBikeKm.toFixed(0)} km{bikePct !== null && <span className="wstat-pct">{bikePct} %</span>}</span>}
-        {weekRunKm  > 0 && <span className="wstat"><span className="wstat-icon"><RunIcon  size={14} /></span>{weekRunKm.toFixed(1)} km{runPct  !== null && <span className="wstat-pct">{runPct} %</span>}</span>}
+        {weekSwimKm > 0 && <span className="wstat"><span className="wstat-icon"><SwimIcon size={14} /></span><span className="wstat-values">{weekSwimKm.toFixed(1)} km{swimPct !== null && <span className="wstat-pct">{swimPct} %</span>}</span></span>}
+        {weekBikeKm > 0 && <span className="wstat"><span className="wstat-icon"><BikeIcon size={14} /></span><span className="wstat-values">{weekBikeKm.toFixed(0)} km{bikePct !== null && <span className="wstat-pct">{bikePct} %</span>}</span></span>}
+        {weekRunKm  > 0 && <span className="wstat"><span className="wstat-icon"><RunIcon  size={14} /></span><span className="wstat-values">{weekRunKm.toFixed(1)} km{runPct  !== null && <span className="wstat-pct">{runPct} %</span>}</span></span>}
         {/* {weekTotalKm > 0 && <span className="wstat wstat-total">{weekTotalKm.toFixed(0)} km</span>} */}
         <span className="wstat wstat-done">{doneCount}/{trackableDays.length} · {weekPct ?? 0} %</span>
       </div>

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Hero } from "./components/Hero";
 import { WeekCard } from "./components/WeekCard";
 import { PackingList } from "./components/PackingList";
+import { Report } from "./components/Report";
 import { plan } from "./data/plan";
 import { useScrollToToday } from "./hooks/useScrollToToday";
 
@@ -33,13 +34,14 @@ function PlanView() {
   );
 }
 
-type Tab = "plan" | "packing";
+type Tab = "report" | "plan" | "packing";
 
-const DEFAULT_TAB: Tab = "packing";
+const DEFAULT_TAB: Tab = "report";
 
 function readTabFromUrl(): Tab {
   const value = new URLSearchParams(window.location.search).get("tab");
-  return value === "plan" ? "plan" : DEFAULT_TAB;
+  if (value === "plan" || value === "packing" || value === "report") return value;
+  return DEFAULT_TAB;
 }
 
 export default function App() {
@@ -50,6 +52,15 @@ export default function App() {
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
+
+  useEffect(() => {
+    document.title =
+      tab === "report"
+        ? "Oravaman 2026 — Report"
+        : "Oravaman 2026 — Plán prípravy";
+    document.body.classList.toggle("is-report", tab === "report");
+    return () => document.body.classList.remove("is-report");
+  }, [tab]);
 
   const selectTab = useCallback((next: Tab) => {
     setTab(next);
@@ -63,29 +74,33 @@ export default function App() {
   }, []);
 
   return (
-    <div className="wrap">
-      <nav className="tabs" aria-label="Sekcie">
-        <button
-          type="button"
-          className={tab === "plan" ? "tab active" : "tab"}
-          onClick={() => selectTab("plan")}
-        >
-          Plán
-        </button>
-        <button
-          type="button"
-          className={tab === "packing" ? "tab active" : "tab"}
-          onClick={() => selectTab("packing")}
-        >
-          Balenie
-        </button>
-      </nav>
+    <div className={tab === "report" ? "wrap wrap-report" : "wrap"}>
+      {tab !== "report" && (
+        <nav className="tabs" aria-label="Sekcie">
+          <button
+            type="button"
+            className={tab === "plan" ? "tab active" : "tab"}
+            onClick={() => selectTab("plan")}
+          >
+            Plán
+          </button>
+          <button
+            type="button"
+            className={tab === "packing" ? "tab active" : "tab"}
+            onClick={() => selectTab("packing")}
+          >
+            Balenie
+          </button>
+        </nav>
+      )}
 
-      {tab === "plan" ? <PlanView /> : <PackingList />}
+      {tab === "report" ? <Report /> : tab === "plan" ? <PlanView /> : <PackingList />}
 
-      <div className="foot">
-        Vytvorené z exportu Strava · activities.csv · 6 týždňov do 11. 7. 2026
-      </div>
+      {tab !== "report" && (
+        <div className="foot">
+          Vytvorené z exportu Strava · activities.csv · 6 týždňov do 11. 7. 2026
+        </div>
+      )}
     </div>
   );
 }
